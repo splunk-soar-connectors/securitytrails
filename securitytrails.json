@@ -4,34 +4,31 @@
     "description": "Provides interface to SecurityTrails API",
     "type": "information",
     "product_vendor": "SecurityTrails",
-    "logo": "securitytrails.png",
-    "logo_dark": "securitytrails_dark.png",
+    "logo": "logo_securitytrails.svg",
+    "logo_dark": "logo_securitytrails_dark.svg",
     "product_name": "API",
     "product_version_regex": ".*",
     "publisher": "Domenico Perre",
-    "license": "Copyright (c) Domenico Perre, 2018",
+    "license": "Copyright (c) Domenico Perre, 2019",
     "app_version": "1.1.0",
     "utctime_updated": "2018-04-30T10:29:53.916185Z",
     "package_name": "phantom_securitytrails",
     "main_module": "securitytrails_connector.pyc",
-    "min_phantom_version": "3.5.205",
+    "min_phantom_version": "4.2.7532",
     "app_wizard_version": "1.1.0",
     "configuration": {
         "base_url": {
-            "description": "Base URL for api request",
+            "description": "Base URL for API request",
             "data_type": "string",
             "required": true,
-            "value_list": [],
             "default": "https://api.securitytrails.com/v1/",
             "order": 0
         },
         "api_key": {
             "description": "API Key for Connectivity",
-            "data_type": "string",
+            "data_type": "password",
             "required": true,
-            "value_list": [],
-            "default": "",
-            "order": 0
+            "order": 1
         }
     },
     "actions": [
@@ -62,8 +59,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -203,8 +198,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -279,7 +272,6 @@
                         "street"
                     ]
                 },
-                
                 {
                     "data_path": "action_result.data.*.contacts.*.email",
                     "data_type": "string",
@@ -346,8 +338,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -475,7 +465,7 @@
         {
             "action": "domain searcher",
             "identifier": "domain_searcher",
-            "description": "Filter and search specific records using this endpoint.",
+            "description": "Filter and search specific records using this endpoint",
             "verbose": "Filter and search specific records using this endpoint. Using simple filter composition, any type of data fetching is possible. The post object uses a very simple dsl where the json key represents the type to filter on and the value. Given this, you can create any number of queries, depending on the need.",
             "type": "investigate",
             "read_only": false,
@@ -485,7 +475,6 @@
                     "data_type": "string",
                     "required": true,
                     "primary": false,
-                    "contains": [],
                     "value_list": [
                         "ipv4",
                         "ipv6",
@@ -508,7 +497,6 @@
                         "whois_fax",
                         "whois_city"
                     ],
-                    "default": "",
                     "order": 0
                 },
                 "filterstring": {
@@ -516,9 +504,6 @@
                     "data_type": "string",
                     "required": true,
                     "primary": false,
-                    "contains": [],
-                    "value_list": [],
-                    "default": "",
                     "order": 1
                 },
                 "keyword": {
@@ -526,9 +511,6 @@
                     "data_type": "string",
                     "required": false,
                     "primary": false,
-                    "contains": [],
-                    "value_list": [],
-                    "default": "",
                     "order": 2
                 }
             },
@@ -536,21 +518,18 @@
                 {
                     "data_path": "action_result.parameter.filter",
                     "data_type": "string",
-                    "contains": [],
                     "column_name": "filter",
                     "column_order": 0
                 },
                 {
                     "data_path": "action_result.parameter.filterstring",
                     "data_type": "string",
-                    "contains": [],
                     "column_name": "filterstring",
                     "column_order": 1
                 },
                 {
                     "data_path": "action_result.parameter.keyword",
                     "data_type": "string",
-                    "contains": [],
                     "column_name": "keyword",
                     "column_order": 2
                 },
@@ -612,7 +591,7 @@
         {
             "action": "domain category",
             "identifier": "domain_category",
-            "description": "Returns tags for a given domain.",
+            "description": "Returns tags for a given domain",
             "verbose": "Returns tags for a given domain. Such as gambling, sports, news.",
             "type": "investigate",
             "read_only": false,
@@ -625,8 +604,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -684,7 +661,7 @@
         {
             "action": "domain subdomain",
             "identifier": "domain_subdomain",
-            "description": "Returns subdomains for a given domain.",
+            "description": "Returns subdomains for a given domain",
             "verbose": "Returns subdomains for a given domain.",
             "type": "investigate",
             "read_only": false,
@@ -697,8 +674,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 }
             },
@@ -768,7 +743,7 @@
         {
             "action": "domain history",
             "identifier": "domain_history",
-            "description": "Lists out specific historical information about the given domain parameter.",
+            "description": "Lists out specific historical information about the given domain parameter",
             "verbose": "Lists out specific historical information about the given domain parameter.",
             "type": "investigate",
             "read_only": false,
@@ -781,8 +756,6 @@
                     "contains": [
                         "domain"
                     ],
-                    "value_list": [],
-                    "default": "",
                     "order": 0
                 },
                 "record_type": {
@@ -819,7 +792,10 @@
                     "data_path": "action_result.parameter.record_type",
                     "data_type": "string",
                     "column_name": "record_type",
-                    "column_order": 1
+                    "column_order": 1,
+                    "contains":[
+                        "*"
+                    ]
                 },
                 {
                     "data_path": "action_result.status",
