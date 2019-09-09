@@ -6,6 +6,8 @@ from phantom.action_result import ActionResult
 import requests
 import json
 from bs4 import BeautifulSoup
+from bs4 import UnicodeDammit
+
 
 class RetVal(tuple):
     def __new__(cls, val1, val2=None):
@@ -44,9 +46,13 @@ class SecuritytrailsConnector(BaseConnector):
             error_text = "Cannot parse error details"
 
         message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code,
-                error_text)
+                UnicodeDammit(error_text).unicode_markup.encode('utf-8'))
 
         message = message.replace('{', '{{').replace('}', '}}')
+
+        # The period at the end has been intentionally ignored because it is being handled in the caller methods.
+        if len(message) > 500:
+            message = 'Error while connecting to a server. Please check the base_url and credentials'
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
@@ -107,11 +113,9 @@ class SecuritytrailsConnector(BaseConnector):
 
         # Create a URL to connect to
         try:
-            url = self._base_url.encode('utf-8', 'ignore').decode('utf-8')
+            url = UnicodeDammit(self._base_url).unicode_markup.encode('utf-8') + endpoint
         except:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid base_url. Enter the Valid vaule.")
-
-        url = self._base_url + endpoint
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid base_url. Please provide a valid base_url."))
 
         api_key = config.get('api_key')
 
@@ -142,8 +146,9 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Test Connectivity Failed for SecurityTrails. {}".format(str(response) if response else ''))
-            return action_result.set_status(phantom.APP_ERROR, status_message=message)
+            self.save_progress("Test Connectivity Failed")
+            return action_result.set_status(phantom.APP_ERROR,
+                                "Error while running connectivity: {0}. {1}".format(action_result.get_message(), 'Response: {0}'.format(str(response)) if response else ''))
 
         self.save_progress("Test Connectivity Passed")
         return action_result.set_status(phantom.APP_SUCCESS)
@@ -159,7 +164,7 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Failed Response to Lookup Domain."
+            message = "Failed response to Lookup Domain."
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         data_output = {}
@@ -198,7 +203,7 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Failed Response to whois Domain."
+            message = "Failed response to whois Domain."
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         data_output = response
@@ -220,7 +225,7 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Failed Response to whois history."
+            message = "Failed response to whois history."
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         data_output = response
@@ -310,7 +315,7 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Failed Response to domain category."
+            message = "Failed response to domain category."
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         try:
@@ -340,7 +345,7 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Failed Response to domain subdomain."
+            message = "Failed response to domain subdomain."
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         outputArray = []
@@ -376,7 +381,7 @@ class SecuritytrailsConnector(BaseConnector):
         ret_val, response = self._make_rest_call(endpoint, action_result)
 
         if (phantom.is_fail(ret_val)):
-            message = "Failed Response to domain history."
+            message = "Failed response to domain history."
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         outputArray = []
@@ -401,7 +406,7 @@ class SecuritytrailsConnector(BaseConnector):
             ret_val, response = self._make_rest_call(endpoint, action_result)
 
             if (phantom.is_fail(ret_val)):
-                message = "Failed Response to domain history for page {} of response.".format(i)
+                message = "Failed response to domain history for page {} of response.".format(i)
                 return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         results = {"results": outputArray, "domain": domain}
