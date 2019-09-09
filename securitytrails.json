@@ -36,7 +36,6 @@
             "action": "test connectivity",
             "identifier": "test_connectivity",
             "description": "Validate the asset configuration for connectivity using supplied configuration",
-            "verbose": "",
             "type": "test",
             "read_only": true,
             "parameters": {},
@@ -47,7 +46,6 @@
             "action": "lookup domain",
             "identifier": "lookup_domain",
             "description": "Check for the presence of a domain in a threat intelligence feed",
-            "verbose": "",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -130,7 +128,7 @@
                     "data_path": "action_result.data.*.aaaa.*.type",
                     "data_type": "string",
                     "column_name": "record_type",
-                    "column_order": 2,
+                    "column_order": 4,
                     "example_values": [
                         "aaaa"
                     ]
@@ -139,7 +137,7 @@
                     "data_path": "action_result.data.*.aaaa.*.ipv6",
                     "data_type": "string",
                     "column_name": "ipv6",
-                    "column_order": 3,
+                    "column_order": 5,
                     "example_values": [
                         "2406:DA00:FF00::36D0:E949"
                     ],
@@ -161,7 +159,7 @@
                     "data_path": "action_result.data.*.alexa_rank",
                     "data_type": "numeric",
                     "column_name": "alexa_rank",
-                    "column_order": 4,
+                    "column_order": 6,
                     "example_values": [
                         32
                     ]
@@ -186,7 +184,6 @@
             "action": "whois domain",
             "identifier": "whois_domain",
             "description": "Execute whois lookup on the given domain",
-            "verbose": "",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -278,7 +275,7 @@
                     "column_name": "email",
                     "column_order": 9,
                     "contains": [
-                        "telephone"
+                        "email"
                     ]
                 },
                 {
@@ -326,7 +323,6 @@
             "action": "whois history",
             "identifier": "whois_history",
             "description": "Obtain historic whois records for a domain name",
-            "verbose": "",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -419,7 +415,7 @@
                     "column_name": "email",
                     "column_order": 9,
                     "contains": [
-                        "telephone"
+                        "email"
                     ]
                 },
                 {
@@ -466,15 +462,14 @@
             "action": "domain searcher",
             "identifier": "domain_searcher",
             "description": "Filter and search specific records using this endpoint",
-            "verbose": "Filter and search specific records using this endpoint. Using simple filter composition, any type of data fetching is possible. The post object uses a very simple dsl where the json key represents the type to filter on and the value. Given this, you can create any number of queries, depending on the need.",
+            "verbose": "Using simple filter composition, any type of data fetching is possible. The post object uses a very simple dsl where the json key represents the type to filter on and the value. Given this, you can create any number of queries, depending on the need.",
             "type": "investigate",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "filter": {
                     "description": "Filter search, this is used to specify what type of record  you want to search against",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "value_list": [
                         "ipv4",
                         "ipv6",
@@ -503,14 +498,12 @@
                     "description": "Filter string, this is used to provide a string value.  For example if you selected apex_domain above you will enter in this panel the domain you want to search",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "order": 1
                 },
                 "keyword": {
                     "description": "keyword filter that is optional. An example is if you select 'mx' as the filter and 'alt4.aspmx.l.google.com' as the filterstring you could type 'stackover' to retrieve all mx records related to stackoverflow",
                     "data_type": "string",
                     "required": false,
-                    "primary": false,
                     "order": 2
                 }
             },
@@ -543,7 +536,7 @@
                         "domain"
                     ],
                     "column_name": "hostname",
-                    "column_order": 4
+                    "column_order": 3
                 },
                 {
                     "data_path": "action_result.data.*.records.*.alexa_rank",
@@ -592,15 +585,15 @@
             "action": "domain category",
             "identifier": "domain_category",
             "description": "Returns tags for a given domain",
-            "verbose": "Returns tags for a given domain. Such as gambling, sports, news.",
+            "verbose": "Returns tags such as gambling, sports, news.",
             "type": "investigate",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "domain": {
                     "description": "Domain to be queried",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
+                    "primary": true,
                     "contains": [
                         "domain"
                     ],
@@ -662,15 +655,14 @@
             "action": "domain subdomain",
             "identifier": "domain_subdomain",
             "description": "Returns subdomains for a given domain",
-            "verbose": "Returns subdomains for a given domain.",
             "type": "investigate",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "domain": {
                     "description": "Domain to be queried",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
+                    "primary": true,
                     "contains": [
                         "domain"
                     ],
@@ -744,15 +736,13 @@
             "action": "domain history",
             "identifier": "domain_history",
             "description": "Lists out specific historical information about the given domain parameter",
-            "verbose": "Lists out specific historical information about the given domain parameter.",
             "type": "investigate",
-            "read_only": false,
+            "read_only": true,
             "parameters": {
                 "domain": {
                     "description": "Domain to be queried",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
                     "contains": [
                         "domain"
                     ],
@@ -762,7 +752,7 @@
                     "description": "DNS record type",
                     "data_type": "string",
                     "required": true,
-                    "primary": false,
+                    "primary": true,
                     "contains": [
                         "*"
                     ],

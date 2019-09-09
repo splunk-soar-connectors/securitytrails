@@ -7,7 +7,6 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
-
 class RetVal(tuple):
     def __new__(cls, val1, val2=None):
         return tuple.__new__(RetVal, (val1, val2))
@@ -107,6 +106,11 @@ class SecuritytrailsConnector(BaseConnector):
             return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid method: {0}".format(method)), resp_json)
 
         # Create a URL to connect to
+        try:
+            url = self._base_url.encode('utf-8', 'ignore').decode('utf-8')
+        except:
+            return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid base_url. Enter the Valid vaule.")
+
         url = self._base_url + endpoint
 
         api_key = config.get('api_key')
