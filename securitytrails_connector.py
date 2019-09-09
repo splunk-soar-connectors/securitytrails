@@ -292,7 +292,7 @@ class SecuritytrailsConnector(BaseConnector):
             ret_val, response = self._make_rest_call(endpoint, action_result, params=None, headers=header_new, method="post", data=json_dumps_values)
 
         if (phantom.is_fail(ret_val)):
-            message = ("Domain Searcher Failed: {} request received a non 200 response.".format(endpoint))
+            message = ("Domain Searcher failed: {} request received a non 200 response.".format(endpoint))
             return action_result.set_status(phantom.APP_ERROR, status_message=message)
 
         data_output = {}
